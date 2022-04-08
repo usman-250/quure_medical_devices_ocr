@@ -1,0 +1,11 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:1em;
+}
+input, label {
+    line-height: 1.5em;
+  }
+
+.hiddenfield {
+	display:none;
+	}

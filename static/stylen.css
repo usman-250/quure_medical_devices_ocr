@@ -1,0 +1,96 @@
+body {
+  font-family: "Raleway", sans-serif;
+  font-size: 100%;
+}
+
+h1 {
+  color: #fff;
+  font-size: 2.8rem;
+  font-weight: 600;
+  margin: 2rem 2rem 2rem 2rem;
+  text-align: center;
+}
+
+.box {
+  margin-top: 40px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.js .inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  max-width: 100%;
+  width: 100%;
+  font-size: 20px;
+  /* 20px */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.no-js .inputfile + label {
+  display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label {
+  border: 1px solid #e7edf0;
+  background-color: #f7f9fa;
+  padding: 0;
+}
+
+.inputfile + label .archive-name,
+.inputfile + label .btn-inputfile {
+  padding: 10px 20px 0;
+  height: 50px;
+  font-style: normal;
+}
+
+.inputfile + label .archive-name {
+  width: 60%;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+  color: #919298;
+}
+
+.inputfile + label .btn-inputfile {
+  color: white;
+  background-color: #e9424f;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+}
+
+.inputfile:focus + label .btn-inputfile,
+.inputfile.has-focus + label .btn-inputfile,
+.inputfile + label:hover .btn-inputfile {
+  background-color: #e62b3a;
+}
+
+@media screen and (max-width: 50em) {
+  .inputfile + label .btn-inputfile {
+    display: block;
+  }
+}

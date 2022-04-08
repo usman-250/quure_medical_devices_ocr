@@ -1,0 +1,82 @@
+html {
+  font-size: 16px;
+  background: #edeff0;
+  font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.wrap, .wrap1, .wrap2 {
+  width: 500px;
+  margin: auto;
+  position: right;
+  top: 50%:
+  transform: translate(50%, 50%);
+  border-radius: 4px;
+  background-color: #2e4261;
+  box-shadow: 0 1px 2px 0 #c9ced1;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+
+.file, .file1, .file2 {
+  position: relative;
+  max-width: 22.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+.file__input, .file__value, .file__input1, .file__input2 {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  margin-bottom: 0.875rem;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 0.9375rem 1.0625rem;
+}
+.file__input--file, .file__input1--file, .file__input2--file {
+  position: absolute;
+  opacity: 0;
+}
+.file__input--label, .file__input1--label, .file__input2--label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+.file__input--label:after, .file__input1--label:after, .file__input2--label:after {
+  content: attr(data-text-btn);
+  border-radius: 3px;
+  background-color: #536480;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.18);
+  padding: 0.9375rem 1.0625rem;
+  margin: -0.9375rem -1.0625rem;
+  color: white;
+  cursor: pointer;
+}
+.file__value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+.file__value:hover:after {
+  color: white;
+}
+.file__value:after {
+  content: "X";
+  cursor: pointer;
+}
+.file__value:after:hover {
+  color: white;
+}
+.file__remove {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+}

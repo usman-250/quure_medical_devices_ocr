@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cure Me</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/css/foundation.min.css'>
+  <link rel='stylesheet' href='https://cdn.materialdesignicons.com/1.8.36/css/materialdesignicons.min.css'>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+
+
+</head>
+
+<body>
+  {% extends "base.html" %} {% block content %}
+  <form id="tests" method="POST" enctype="multipart/form-data" action="{{ url_for('main.show_emails')}}">
+    <div>
+      <select id="selectEmail" , name='emailDropdown'>
+        <option>Choose a number</option>
+      </select>
+    </div>
+
+
+
+    <div align="center">
+
+      <button type="submit" class="btn btn-secondary btn-lg">show Data</button>
+    </div>
+
+  </form>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script>
+    var emails = "{{ emails|safe }}";
+    // console.log(typeof eval(emails))
+    var select = document.getElementById("selectEmail");
+    var options = eval(emails);
+
+    for (var i = 0; i < options.length; i++) {
+      var opt = options[i];
+      var el = document.createElement("option");
+      el.textContent = opt;
+      el.value = opt;
+      select.appendChild(el);
+    }
+
+    create_table()
+
+    function create_table() {
+      // create table
+      var mydata = "{{ data|safe }}";
+      if ((mydata != '{}') && (mydata != '')) {
+        mydata = eval(mydata)
+        document.write("<table border='1' width='200'>")
+        document.write("<tr><th>email</th><th>Time</th><th>Date</th><th>Test</th><th>Device</th><th>Image</th></tr>");
+
+        for (var i = 0; i < mydata.length; i++) {
+          // console.log(Object.keys(mydata[i]))
+          document.write("<tr>")
+          for (var k = 0; k < Object.keys(mydata[i]).length; k++) {
+            key = Object.keys(mydata[i])[k]
+            // console.log(key, mydata[i][key])
+            if (key == 'image') {
+              document.write("<td>" + (JSON.stringify(mydata[i][key])) + "</td>")
+              // document.write("<td>" + (mydata[i][key]) + "</td>")
+            }
+            else {
+              document.write("<td>" + (mydata[i][key]) + "</td>")
+            }
+          }
+          document.write("</tr>")
+          // document.write("<tr><td>" + (mydata[i].email) + "</td><td>" + monthsEnglish[i] + "</td><td>" + monthsSpanish[i] +"</td></tr>");
+        }
+        //Static content  --------------------------------------------------------
+        document.write("</table>")
+      }
+    }
+
+  </script>
+
+  {% endblock %}
+</body>
+
+</html>
