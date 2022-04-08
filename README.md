@@ -1,0 +1,1 @@
+# quure_medical_devices_ocr
