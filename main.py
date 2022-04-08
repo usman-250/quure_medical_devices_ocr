@@ -23,10 +23,6 @@ import json
 
 
 
-# records = return_all_data(mycol)
-# print('\n\n---------->>>>>>> all records ', records,'\n\n')
-mydict = {}
-
 
 app=Flask(__name__)
 main = Blueprint('main', __name__)
@@ -48,19 +44,14 @@ def uploading():
 @main.route('/emails', methods=['GET', 'POST'])
 @login_required
 def show_emails():
-    # print('\n\n\n\n=======================asdfadf', request.method)
     if request.method == 'POST':
-        # print('---------->>>>>>>> in post')
         email = request.form['emailDropdown']
-        # print(email)
-        email_docs =  find_documents_on_email(predictions_col,email)
+        email_docs = find_documents_on_email(predictions_col,email)
         all_emails = return_all_users_email(predictions_col)
 
-        # print('=====docs ', email_docs)
         return render_template('show_emails.html', emails=list(set(all_emails)), data=email_docs)
     else:
-        # print('---------->>>>>>>> in gwt')
-        all_emails = return_all_users_email(mycol)
+        all_emails = return_all_users_email(predictions_col)
         return render_template('show_emails.html',emails=list(set(all_emails)))
 
 
@@ -73,7 +64,6 @@ aws_textract = boto3.client(service_name='textract', region_name='us-east-2',aws
 model=load_model('./Dataset/best_model.h5')
 
 def predict_vals(files_add, path):
-    # print('\n\n========',path)
     all_imgs_pred = {}
     for file in files_add:
         if file:
@@ -152,18 +142,14 @@ def glucose_mobile(documentName):
             'Bytes': document.read(),
                 }
             )
-    # Print text
 
-    # print('\n\n--->>>> response ',response)
     text = ""
     for item in response["Blocks"]:
         if item["BlockType"] == "LINE":
-            # print ('\033[94m' +  item["Text"] + '\033[0m')
             text = text + " " + item["Text"]
 
 
     pos = text.find('mg/')
-    # print('-------------->>>>>>>>>>>>\n',pos,text)
     text = text.replace('.',' ')
     final_text = [s for s in text[pos-10:pos].split() if s.isdigit()]
     return " ".join(final_text)[:4]
@@ -188,18 +174,6 @@ def prediction():
             print('\n\n\n->>>>>>>>>>>>>>>',files_add, test_dropdown+'/'+device_dropdown )
             # return render_template('prediction.html')
             preds, filename, glc_mobile_device = predict_vals(files_add, test_dropdown+'/'+device_dropdown )
-
-            print('\n\n=========>>>>>>>>>>\ Predictions : ',preds)
-
-            # return render_template('loading.html')
-        
-        # mydict['email'] = current_user.email
-        # mydict['time'] = str(datetime.datetime.now().time())
-        # mydict['date'] = str(datetime.datetime.now().date())
-        # mydict['test_name'] = test_dropdown
-        # mydict['device_type'] = device_dropdown
-        # mydict['image'] = {filename:''}
-
 
         ##################################################
         device_name = ""
@@ -239,18 +213,12 @@ def prediction():
         test_details["time"] = "09:57:46"
         test_details["date"] = "2022-04-06"
 
-        
-        
         final_preds = make_final_dict(device_type, device_name,device_model,company_name,user_name,user_email,predicted_at_date,predicted_at,updated_at,\
             test_category,image,test_details)
 
-        print('\n\n------->>>>>>>> : ', final_preds)
-
 
         ###################################################33
-        
 
-        # x = mycol.insert_one(mydict)
 
         im = Image.open(filename)
         data = io.BytesIO()
@@ -258,16 +226,9 @@ def prediction():
         rgb_im.save(data, "JPEG")
         encoded_img_data = base64.b64encode(data.getvalue())
         os.remove(filename)
-        # if glc_mobile_device:
-        #     if preds.keys():
-        #         preds = preds[list(preds.keys())[0]]
-        #         # preds = ','.join([str(i) for i in preds[list(preds.keys())[0]]])
-        # elif preds.keys():
-        #         preds = ','.join([str(i) for i in preds[list(preds.keys())[0]]])
         return render_template('prediction.html',preds=json.dumps(final_preds), image=encoded_img_data.decode('utf-8') )
     except:
         return render_template('uploading.html',message = "unable to extract data")
-        # return redirect(url_for('main.uploading'))
 
 
 @main.route('/saving', methods=['GET', 'POST'])
@@ -283,29 +244,20 @@ def saving():
         device_info = json_data.get('device')
         pred_info = json_data.get('prediction')
         
+        
 
         #insert user info
-        # user_inserted = users_col.insert_one(user_info, upsert=True)
-        # users_col.update({ 'user_email': user_info['user_email']}), 
-
-        user_inserted = users_col.update_one( { 'user_email': user_info['user_email']} , {'$set':user_info}, upsert=True)
-
-     
-        
+        user_inserted = update_doc(users_col,'user_email',user_info)
+        # user_inserted = users_col.update_one( { 'user_email': user_info['user_email']} , {'$set':user_info}, upsert=True)
         
         #insert device info
-        # device_inserted = devices_col.insert_one(device_info, upsert=True)
-        device_inserted = devices_col.update_one( { 'device_name': device_info['device_name']} , {'$set':device_info}, upsert=True)
+        device_inserted = update_device_doc(devices_col,['device_name','device_type',],device_info)
+        # device_inserted = devices_col.update_one( { 'device_name': device_info['device_name']} , {'$set':device_info}, upsert=True)
 
-        
         #insert prediction info
-        pred_inserted = predictions_col.insert_one(pred_info.copy())
+        pred_inserted = insert_doc(predictions_col,pred_info)
+        # pred_inserted = predictions_col.insert_one(pred_info.copy())
 
-        # print("\n\n\n\n====>>>> request jason",request.json())
-        # mydict['image'] = { final_img_name : request.form['preds'].split(',') }
-
-        # x = mycol.insert_one(mydict.copy()) # check why  to use .copy error
-        # print(x.inserted)
 
         return render_template('uploading.html')
 

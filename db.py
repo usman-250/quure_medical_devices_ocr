@@ -12,6 +12,10 @@ def insert_values(mycol,document):
     x = mycol.insert_many(document)
     return x.inserted_ids
 
+def insert_doc(my_collection,doc):
+    pred_inserted = my_collection.insert_one(doc)
+    return pred_inserted
+
 
 def return_all_data(collection):
     all_data = []
@@ -35,6 +39,14 @@ def find_documents_on_email(mycol,email):
     if records:
         return records
     return {}
+
+def update_device_doc(my_collection,key,data):
+    user_inserted = my_collection.update_one( { key[0]: data[key[0]], key[-1]: data[key[-1]]} , {'$set':data}, upsert=True)
+    return user_inserted
+
+def update_doc(my_collection,key,data):
+    user_inserted = my_collection.update_one( { key: data[key]} , {'$set':data}, upsert=True)
+    return user_inserted
 
 # def update_document(url,newvalues):
 #     myquery = { 'url': url }
