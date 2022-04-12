@@ -17,9 +17,9 @@ import datetime
 import base64
 import boto3
 import time
+import json
 import cv2
 import io
-import json
 
 
 
@@ -178,7 +178,7 @@ def prediction():
         ##################################################
         device_name = ""
         device_type = ""
-        device_model = "c1"
+        device_model = ""
         company_name = "Accu-Chek"
         user_name = current_user.name
         user_email = current_user.email
@@ -228,30 +228,28 @@ def prediction():
         os.remove(filename)
         return render_template('prediction.html',preds=json.dumps(final_preds), image=encoded_img_data.decode('utf-8') )
     except:
-        return render_template('uploading.html',message = "unable to extract data")
+        return render_template('uploading.html',message = "unable to extract data, Try with another image")
 
 
 @main.route('/saving', methods=['GET', 'POST'])
 @login_required
 def saving():
     if request.method == 'POST':
-        print("\n\n\n\n====>>>> fjldkjsd  request json",request.form['inppreds'])
+        # print("\n\n====>>>> fjldkjsd  request json",request.form['inppreds'])
 
         json_data = eval(request.form['inppreds'])
 
-        print('\n\n type--->>> ',type(json_data))
+        # print('\n\n type--->>> ', type(json_data))
         user_info = json_data.get('user')
         device_info = json_data.get('device')
         pred_info = json_data.get('prediction')
-        
-        
 
         #insert user info
         user_inserted = update_doc(users_col,'user_email',user_info)
         # user_inserted = users_col.update_one( { 'user_email': user_info['user_email']} , {'$set':user_info}, upsert=True)
         
         #insert device info
-        device_inserted = update_device_doc(devices_col,['device_name','device_type',],device_info)
+        device_inserted = update_device_doc(devices_col,['device_name','device_type','device_model'],device_info)
         # device_inserted = devices_col.update_one( { 'device_name': device_info['device_name']} , {'$set':device_info}, upsert=True)
 
         #insert prediction info
@@ -264,6 +262,14 @@ def saving():
 
 
 def make_final_dict(device_type, device_name,device_model,company_name,user_name,user_email,predicted_at_date,predicted_at,updated_at,test_category,image,test_details):
+    
+    if device_name == "glucco meter":
+        device_model ='G1'
+    elif device_name == "BP apparatus":
+        device_model ='B1'
+    elif device_name == "thermometer":
+        device_model ='T1'
+
     final_preds ={
         "device": {
             "device_name": device_name,
@@ -293,7 +299,7 @@ def make_final_dict(device_type, device_name,device_model,company_name,user_name
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = False)
 
 
 

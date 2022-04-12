@@ -41,7 +41,7 @@ def find_documents_on_email(mycol,email):
     return {}
 
 def update_device_doc(my_collection,key,data):
-    user_inserted = my_collection.update_one( { key[0]: data[key[0]], key[-1]: data[key[-1]]} , {'$set':data}, upsert=True)
+    user_inserted = my_collection.update_one( { key[0]: data[key[0]], key[1]: data[key[1]], key[-1]: data[key[-1]]} , {'$set':data}, upsert=True)
     return user_inserted
 
 def update_doc(my_collection,key,data):
