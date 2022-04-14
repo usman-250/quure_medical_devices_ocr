@@ -29,5 +29,6 @@ step-5 install requirements
 step-6
 
   export FLASK_APP=<path to root dir of cloned repo>
+
   flask run
 
