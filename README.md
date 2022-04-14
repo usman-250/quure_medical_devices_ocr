@@ -3,7 +3,10 @@
 run
 
 step-1 clone the repositry
+
+
 step-2 cd <path to repo>
+
 step-3 make a virtual env
         
       python3 -m venv medical
