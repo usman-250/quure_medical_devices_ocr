@@ -1,9 +1,17 @@
 # quure_medical_devices_ocr
 
-run
+# run
+
+to run install python = 3.8
 
 step-1 clone the repositry
-step-2 cd <path to repo>
+	
+	git clone <>
+
+step-2 
+	
+	cd <path to repo>
+
 step-3 make a virtual env
         
       python3 -m venv medical
@@ -19,6 +27,7 @@ step-5 install requirements
   
   
 step-6
+
   export FLASK_APP=<path to root dir of cloned repo>
   flask run
 
