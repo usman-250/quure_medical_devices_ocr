@@ -18,17 +18,18 @@ step-3 make a virtual env
   
 step-4 activate env
       
-      cd <path to venv/bin >
-      source activate
+	cd <path to venv/bin >
+      
+	source activate
 
 step-5 install requirements
   
-    pip install -r <path to requirements.txt file>
+	pip install -r <path to requirements.txt file>
   
   
 step-6
 
-  export FLASK_APP=<path to root dir of cloned repo>
+	export FLASK_APP = <path to root dir of cloned repo>
 
-  flask run
+ 	flask run
 
