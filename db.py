@@ -1,5 +1,7 @@
 from time import sleep
 import pymongo
+from pymongo.collection import ReturnDocument
+
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["qure"]
@@ -41,11 +43,15 @@ def find_documents_on_email(mycol,email):
     return {}
 
 def update_device_doc(my_collection,key,data):
-    user_inserted = my_collection.update_one( { key[0]: data[key[0]], key[1]: data[key[1]], key[-1]: data[key[-1]]} , {'$set':data}, upsert=True)
-    return user_inserted
+    # user_inserted = my_collection.update_one( { key[0]: data[key[0]], key[1]: data[key[1]], key[-1]: data[key[-1]]} , {'$set':data}, upsert=True)
+    id = my_collection.find_one_and_update({ key[0]: data[key[0]], key[1]: data[key[1]], key[-1]: data[key[-1]]}, {
+            '$setOnInsert': data
+        }, upsert=True, return_document=ReturnDocument.AFTER)
+    return id
 
 def update_doc(my_collection,key,data):
-    user_inserted = my_collection.update_one( { key: data[key]} , {'$set':data}, upsert=True)
+    user_inserted = my_collection.find_one_and_update( { key: data[key]} , {'$setOnInsert':data},
+                                             upsert=True, return_document=ReturnDocument.AFTER)
     return user_inserted
 
 # def update_document(url,newvalues):

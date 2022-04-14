@@ -1,0 +1,10 @@
+{
+    "production": {
+        "app_function": "app.app",
+        "profile_name": "default",
+        "project_name": "bp-flask-mongo",
+        "runtime": "python3.7",
+        "s3_bucket": "zappa-bucket",
+        "aws_region": "us-east-2"
+    }
+}
