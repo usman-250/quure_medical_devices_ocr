@@ -8,6 +8,7 @@ from flask_login import login_required, current_user, login_user
 from .helper_functions import get_lcd, imgs_to_array
 from werkzeug.utils import secure_filename
 from keras.models import load_model
+from bson.objectid import ObjectId
 from .models import User
 from flask import jsonify
 from PIL import Image
@@ -272,6 +273,8 @@ def saving():
         # user_info = json_data.get('user')
         # device_info = json_data.get('device')
         pred_info = json_data.get('prediction')
+        pred_info['user_id'] = ObjectId(pred_info['user_id'])
+        pred_info['device_id'] = ObjectId(pred_info['device_id'])
 
         # #insert user info
         # user_inserted = update_doc(users_col,'user_email',user_info)
