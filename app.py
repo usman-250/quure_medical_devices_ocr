@@ -190,8 +190,8 @@ def prediction():
         user_email = current_user.email
         user_role = ""
 
-        predicted_at = str(datetime.datetime.now())
-        updated_at = str(datetime.datetime.now())
+        predicted_at = str(datetime.datetime.utcnow()) # utc time
+        updated_at = str(datetime.datetime.utcnow())
         # predicted_at_date = str(datetime.datetime.now().date())
         test_category = ''
         image_path = filename
