@@ -4,6 +4,12 @@
 
 to run install python = 3.8
 
+pip install pymongo
+
+start mongo
+	
+	sudo systemctl start mongod
+
 step-1 clone the repositry
 	
 	git clone <https://github.com/usman-250/quure_medical_devices_ocr.git>
